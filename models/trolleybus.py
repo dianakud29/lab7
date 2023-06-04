@@ -6,15 +6,16 @@ class Trolleybus(Transport):
 
     __instance = None
 
-    def __init__(self, id=100, quantity_of_passengers = 0, route_number=0, current_stop="", max_speed=0, capacity=0, passengers=0):
+    def __init__(self, id=100, quantity_of_passengers=0, route_number=0, current_stop="", max_speed=0, capacity=0,
+                 passengers=0):
         """
 
-        :param id: id of trolleybus
-        :param route_number: number of each trolleybus
-        :param current_stop: current stop where is trolleybus stop
-        :param max_speed: max speed of trolleybus
-        :param capacity: capacity of trolleybus
-        :param passengers: max quantity of passengers
+        :param id (int): id of trolleybus.Defaults to 100.
+        :param route_number (int): number of each trolleybus.Defaults to 0.
+        :param current_stop (str): current stop where is trolleybus stop.Defaults to an empty string.
+        :param max_speed (int): max speed of trolleybus. Defaults to 0.
+        :param capacity (int): capacity of trolleybus. Defaults to 0.
+        :param passengers (int): max quantity of passengers. Defaults to 0.
         """
         super().__init__(id, quantity_of_passengers, max_speed)
         self.id = 100
@@ -24,9 +25,15 @@ class Trolleybus(Transport):
         self.max_speed = max_speed
         self.capacity = capacity
         self.passengers = passengers
+        self.lock_set = {"mechanical locks", "electronic locks"}
 
     def accelerate(self, speed):
+        """The trolleybus overrides parent class`s acceleration method"""
         self.max_speed += speed
+
+    def refuel(self):
+        """ Refuels the trolleybus """
+        print("Refueling the trolleybus")
 
     def stop(self):
         """The trolleybus stops"""
@@ -54,5 +61,3 @@ class Trolleybus(Transport):
                f"max_speed = {self.max_speed}\f" \
                f"capacity = {self.capacity}\f" \
                f"passengers = {self.passengers}"
-
-
