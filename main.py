@@ -4,8 +4,18 @@ from manager.transport_manager import TransportManager
 from manager.set_manager import SetManager
 from models.train import Train
 from models.tram import Tram
+from exceptions.redundant_refuel_exception import RedundantRefuelException
+from decorators.decorators import logged
+
+
+@logged(RedundantRefuelException, mode="console")
+def template_method(transport):
+    transport.refuel()
+
 
 if __name__ == "__main__":
+    trolleybus = Trolleybus()
+    template_method(trolleybus)
     transport_manager = TransportManager()
 
     transport_manager.add_transport(Tram(100, 30, 25, 50))
@@ -54,11 +64,8 @@ if __name__ == "__main__":
     conditions_result = transport_manager.check_conditions(condition)
     print(conditions_result)
 
-    # Створення об'єкта SetManager з об'єктом transport_manager
     set_manager = SetManager(transport_manager)
-
-    # Використання методу len() на об'єкті SetManager
-    print("\nLength of SetManager:", len(set_manager))
+    print(len(set_manager))
 
     # Використання ітерації по об'єкту SetManager
     print("\nItems in SetManager:")
