@@ -1,4 +1,6 @@
 from abc import ABC, abstractmethod
+from decorators.decorators import logged
+from exceptions.redundant_refuel_exception import RedundantRefuelException
 
 
 class Transport(ABC):
@@ -13,16 +15,20 @@ class Transport(ABC):
         self.max_speed = max_speed
         self.quantity_of_passengers = quantity_of_passengers
         self.lock_set = set()
+        self.fuel_level = 0
+        self.max_fuel_capacity = 0
 
     @abstractmethod
     def accelerate(self, speed):
         """Abstract method to accelerate the transport"""
         pass
 
-    @abstractmethod
-    def refuel(self):
-        """Abstract method to refuel the transport"""
-        pass
+    @logged(RedundantRefuelException, "console")
+    def refuel(self, amount):
+        if self.fuel_level + amount > self.max_fuel_capacity:
+            raise RedundantRefuelException()
+        else:
+            self.fuel_level += amount
 
     def __iter__(self):
         """Returns an iterator for the lock set"""
